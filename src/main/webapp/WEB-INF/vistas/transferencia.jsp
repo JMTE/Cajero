@@ -34,7 +34,7 @@
         </li>
         
          <li class="nav-item" >
-          <a class="nav-link" href="#"><i class="bi bi-person-fill"> ID de la Cuenta: ${cuenta.idCuenta }</i></a>
+          <a class="nav-link" href="/cajero/verDatosCuenta"><i class="bi bi-person-fill"> ID de la Cuenta: ${cuenta.idCuenta }</i></a>
         </li>
         <li class="nav-item" >
           <a class="nav-link" href="/logout"><i class="bi bi-box-arrow-right"> Cerrar Sesión</i></a>
@@ -52,7 +52,7 @@
 	<form action="/cajero/transferencia" method="post">
   <div class="mb-3">
     <label for="cantidad" class="form-label">Introduce Cantidad:</label>
-    <input type="number" min="1" name="cantidad" class="form-control" id="cantidad" required >
+    <input type="number" step="0.01" min="1" name="cantidad" class="form-control" id="cantidad" required >
     
   </div>
   <div class="mb-3">

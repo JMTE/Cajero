@@ -11,7 +11,10 @@ public interface IntCuentaDao {
 	
 	Cuenta findById(int idCuenta);
 	
-	int actualizarCuenta(Cuenta cuenta);
+	int ingresarDinero(Cuenta cuenta, double cantidad);
+	
+	int extraerDinero(Cuenta cuenta, double cantidad);
+	
 	
 
 }

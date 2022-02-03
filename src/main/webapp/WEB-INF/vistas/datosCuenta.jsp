@@ -7,7 +7,7 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
 <meta charset="ISO-8859-1">
-<title>INGRESAR</title>
+<title>DATOS CUENTA</title>
 </head>
 <body>
 <div class="container">
@@ -24,7 +24,7 @@
           <a class="nav-link" href="/cajero/verMovimientos"><i class="bi bi-arrow-down-up"> Ver Movimientos</i></a>
         </li>
         <li class="nav-item">
-          <a  class="nav-link active " aria-current="page" href="/cajero/ingresar"><i class="bi bi-plus-square"> Ingresar</i></a>
+          <a  class="nav-link" href="/cajero/ingresar"><i class="bi bi-plus-square"> Ingresar</i></a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="/cajero/extraer"><i class="bi bi-dash-square"> Extraer</i></a>
@@ -34,7 +34,7 @@
         </li>
         
          <li class="nav-item" >
-          <a class="nav-link" href="#"><i class="bi bi-person-fill"> ID de la Cuenta: ${cuenta.idCuenta }</i></a>
+          <a  class="nav-link active " aria-current="page" href="/cajero/verDatosCuenta"><i class="bi bi-person-fill"> ID de la Cuenta: ${cuenta.idCuenta }</i></a>
         </li>
         <li class="nav-item" >
           <a class="nav-link" href="/logout"><i class="bi bi-box-arrow-right"> Cerrar Sesión</i></a>
@@ -47,22 +47,35 @@
 
 <div class=" cuerpo bg-success p-2 text-white bg-opacity-25">
 <div style="margin:100px 400px 100px 400px">
-	<div class="container3">
-	<p>${fallo}</p>
-	<form action="/cajero/ingresar" method="post">
-  <div class="mb-3">
-    <label for="cantidad" class="form-label">Introduce Cantidad a Ingresar</label>
-    <input type="number" step="0.01" min="1" name="cantidad" class="form-control" id="cantidad" required >
+	
+
+<table class="table border border-5">
+  <thead>
+    <tr>
+      <th scope="col">ID_CUENTA</th>
+      <th scope="col">TIPO</th>
+      <th scope="col">SALDO</th>
+     
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row"><i class="bi bi-person-circle"> ${cuenta.idCuenta } </i></th>
+      <td><i class="bi bi-piggy-bank"> ${cuenta.tipoCuenta }</i></td>
+      <td>${cuenta.saldo } <i class="bi bi-currency-euro"></i></td>
+      
+    </tr>
+   
     
-  </div>
- 
-  <button type="submit" class="btn btn-primary">Ingresar</button>
-  
-</form>
+  </tbody>
+</table>
+
 
 
 </div>
-</div>
+
+
+
 </div>
 
 </div>

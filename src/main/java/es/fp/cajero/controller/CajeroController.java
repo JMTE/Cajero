@@ -5,7 +5,7 @@ package es.fp.cajero.controller;
 /** @author JMTE */
 
 import java.util.ArrayList;
-import java.util.Date;
+
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -74,26 +74,20 @@ public class CajeroController {
 	
 	//Traemos los datos del formulario con el PostMapping, en este caso traemos solo la cantidad, ya que es el unico campo
 	@PostMapping("/ingresar")
-	public String ingresarDinero(Model model, int cantidad ) {
+	public String ingresarDinero(Model model, double cantidad ) {
 		//Recuperamos la cuenta
 		Cuenta cuenta=(Cuenta) misesion.getAttribute("cuenta");
-		//Creamos un nuevo movimiento
-		Movimiento movimiento=new Movimiento();
-		//Le introducimos los valoers al nuevo movimiento
-		movimiento.setCuenta(cuenta);
-		movimiento.setFecha(new Date());
-		movimiento.setOperacion("Ingreso");
-		movimiento.setCantidad(cantidad);
-		//Añadimos el movimiento a la lista de movimientos
-		imov.añadirMovimiento(movimiento);
 		
-		//Actualizamos el saldo de la cuenta
-		cuenta.setSaldo(cuenta.getSaldo()+cantidad);
-		//Actualizamos los valores en la BBDD
-		icuen.actualizarCuenta(cuenta);
+		
+		//Añadimos movimiento ingreso 
+		imov.movimientoIngreso(cuenta, cantidad);
+		
+		//Realizamos operacion ingreso de dinero
+		icuen.ingresarDinero(cuenta,cantidad);
+		
 		
 		model.addAttribute("cuenta", cuenta);
-		model.addAttribute("Cuenta", cuenta);
+		
 		
 		return "redirect:/cajero/";
 	}
@@ -123,32 +117,23 @@ public class CajeroController {
 	
 	//Con PostMapping recuperamos los valores del formulario de extraccion, en este caso la cantidad introducida.
 	@PostMapping("/extraer")
-	public String extraerDinero(Model model,int cantidad) {
+	public String extraerDinero(Model model,double cantidad) {
 		//Recuperamos la cuenta
 		Cuenta cuenta=(Cuenta)misesion.getAttribute("cuenta");
 		
 		//Si la cuenta no tiene saldo suficiente, presentamos un mensaje y seguimos en la mismo jsp de extraccion.
-		if (cuenta.getSaldo()<=cantidad) {
+		if (cuenta.getSaldo()<cantidad) {
 			model.addAttribute("fallo", "No hay suficiente dinero en la cuenta");
 			return "extraccion";
 		
 		//Si la cuenta tiene saldo disponible para ese importe de extracción gestionamos el movimiento
 		}else {
-		//Creamos un moviemiento nuevo e introducimos sus valores correspondientes
-		Movimiento movimiento=new Movimiento();
-		movimiento.setCuenta(cuenta);
-		movimiento.setFecha(new Date());
-		movimiento.setOperacion("Extracción");
-		movimiento.setCantidad(cantidad);
 		
-		//Añadimos ese movimiento a la lista de movimientos
-		imov.añadirMovimiento(movimiento);
+		//Añadimos movimiento de extraccion
+		imov.movimientoExtraccion(cuenta,cantidad);
 		
-		//Actualizamos el saldo de la cuenta
-		cuenta.setSaldo(cuenta.getSaldo()-cantidad);
-		
-		//Actualizamos la cuenta en la BBDD
-		icuen.actualizarCuenta(cuenta);
+		//Realizamos operacion de extraccion de dinero en la cuenta
+		icuen.extraerDinero(cuenta, cantidad);
 		
 		model.addAttribute("cuenta", cuenta);
 		
@@ -167,7 +152,7 @@ public class CajeroController {
 	
 	//Con PostMapping recuperamos los valores del formulario de transferencia
 	@PostMapping("/transferencia")
-	public String transferirDinero(Model model, int cantidad, int idCuenta) {
+	public String transferirDinero(Model model, double cantidad, int idCuenta) {
 		
 		//Recuperamos la cuenta con la que estamos trabajando
 		Cuenta cuenta=(Cuenta)misesion.getAttribute("cuenta");
@@ -182,35 +167,23 @@ public class CajeroController {
 		//Si la cuenta existe y no es la misma de origen, gestionamos la transferencia
 		}else {
 			//Si el saldo es insuficiente en la cuenta de origen para realizar la transferencia, presentamos mensaje y seguimos en transferencia
-			if (cuenta.getSaldo()<=cantidad) {
+			if (cuenta.getSaldo()<cantidad) {
 				model.addAttribute("fallo", "No hay suficiente dinero en la cuenta");
 				return "transferencia";
 			//Si existe saldo suficiente, gestionamos la transferencia
 			}else {
-				//Actualizamos el saldo en la cuenta de origen
-				cuenta.setSaldo(cuenta.getSaldo()-cantidad);
-				//Actualizamos el saldo en la cuenta de destino
-				cuentaDestino.setSaldo(cuentaDestino.getSaldo()+cantidad);
-				//Actualizamos el valor de la cuenta de origen
-				icuen.actualizarCuenta(cuenta);
-				//Actualizamos el valor de la cuenta de destino
-				icuen.actualizarCuenta(cuentaDestino);
 				
-				//Creamos el movimiento creado en la cuenta de origen y lo añadimos a la lista de movimientos
-				Movimiento movimiento=new Movimiento();
-				movimiento.setCuenta(cuenta);
-				movimiento.setFecha(new Date());
-				movimiento.setOperacion("Extracción");
-				movimiento.setCantidad(cantidad);
-				imov.añadirMovimiento(movimiento);
+				//Realizamos operacion extraccion en cuenta de origen
+				icuen.extraerDinero(cuenta, cantidad);
 				
-				//Creamos el movimiento creado en la cuenta de destino y lo añadimos a lista de movimientos
-				Movimiento movimientoDestino=new Movimiento();
-				movimientoDestino.setCuenta(cuentaDestino);
-				movimientoDestino.setFecha(new Date());
-				movimientoDestino.setOperacion("Ingreso");
-				movimientoDestino.setCantidad(cantidad);
-				imov.añadirMovimiento(movimientoDestino);
+				//Realizamos operacion ingreso en la cuenta de destino
+				icuen.ingresarDinero(cuentaDestino, cantidad);
+				
+				//Añadimos movimiento en la cuenta de origen
+				imov.movimientoExtraccion(cuenta, cantidad);
+				
+				//Añadimos movimiento en la cuenta de destino
+				imov.movimientoIngreso(cuentaDestino, cantidad);
 				
 				model.addAttribute("Cuenta", cuenta);
 				return "redirect:/cajero/";
@@ -239,4 +212,14 @@ public class CajeroController {
 	}
 	
 	
+	//Aqui gestionaremos la visualización de los datos de la Cuenta mediante la presentación del jsp datosCuenta
+	@GetMapping("/verDatosCuenta")
+	
+	public String verDatosCuenta(Model model) {
+		
+		Cuenta cuenta=(Cuenta)misesion.getAttribute("cuenta");
+		
+		model.addAttribute("cuenta", cuenta);
+		return "datosCuenta";
+	}
 }

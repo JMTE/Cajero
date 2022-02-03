@@ -37,7 +37,7 @@
         </li>
         
          <li class="nav-item" >
-          <a class="nav-link" href="#"><i class="bi bi-person-fill"> ID de la Cuenta: ${cuenta.idCuenta }</i></a>
+          <a class="nav-link" href="/cajero/verDatosCuenta"><i class="bi bi-person-fill"> ID de la Cuenta: ${cuenta.idCuenta }</i></a>
         </li>
         <li class="nav-item" >
           <a class="nav-link" href="/logout"><i class="bi bi-box-arrow-right"> Cerrar Sesión</i></a>

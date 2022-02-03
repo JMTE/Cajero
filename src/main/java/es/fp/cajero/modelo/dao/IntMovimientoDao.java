@@ -13,7 +13,11 @@ public interface IntMovimientoDao {
 	
 	List<Movimiento> find10UltimosMovimientosbyIdCuenta(int idCuenta);
 	
-	int añadirMovimiento ( Movimiento movimiento);
+	int movimientoExtraccion(Cuenta cuenta, double cantidad);
+	
+	int movimientoIngreso(Cuenta cuenta, double cantidad);
+	
+	
 	
 
 	

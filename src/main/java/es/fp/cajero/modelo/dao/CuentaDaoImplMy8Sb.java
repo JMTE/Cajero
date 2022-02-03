@@ -2,7 +2,7 @@ package es.fp.cajero.modelo.dao;
 
 import java.util.List;
 
-import javax.transaction.Transactional;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,10 +43,15 @@ public class CuentaDaoImplMy8Sb implements IntCuentaDao {
 		
 	}
 
-	//Con este metodo, actualizamos los datos de una cuenta en la BBDD
+	
+
 	@Override
-	public int actualizarCuenta(Cuenta cuenta) {
+	public int ingresarDinero(Cuenta cuenta, double cantidad) {
 		// TODO Auto-generated method stub
+		
+		//Actualizamos el saldo de la cuenta
+		cuenta.setSaldo(cuenta.getSaldo()+cantidad);
+		//Actualizamos los valores en la BBDD
 		int filas=0;
 		try {
 			CRepo.save(cuenta);
@@ -56,6 +61,25 @@ public class CuentaDaoImplMy8Sb implements IntCuentaDao {
 			
 		}
 		return filas;
+		
+	}
+
+	@Override
+	public int extraerDinero(Cuenta cuenta, double cantidad) {
+		// TODO Auto-generated method stub
+		//Actualizamos el saldo de la cuenta
+		cuenta.setSaldo(cuenta.getSaldo()-cantidad);
+		
+		//Actualizamos los valores en la BBDD
+				int filas=0;
+				try {
+					CRepo.save(cuenta);
+					filas=1;
+				}catch (Exception e) {
+					e.printStackTrace();
+					
+				}
+				return filas;
 	}
 
 }

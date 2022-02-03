@@ -1,10 +1,9 @@
 package es.fp.cajero.modelo.dao;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
-import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,24 +31,6 @@ public class MovimientoDaoImplMy8Sb implements IntMovimientoDao {
 		return mRepo.findMovimientosByIdCuenta(idCuenta);
 	}
 	
-	//Con este metodo añadimos un movimiento a la lista de movimientos
-	@Override
-	public int añadirMovimiento(Movimiento movimiento) {
-		
-		System.out.println("Llego para añadir el movimiento");
-		System.out.println(movimiento.getCuenta().getIdCuenta());
-		int filas=0;
-		try {
-			mRepo.save(movimiento);
-			filas=1;
-		}catch (Exception e) {
-			e.printStackTrace();
-			
-		}
-		return filas;
-		
-	}
-
 	
 	//Con este metodo devolvemos los 10 ultimos movimientos de una cuenta introducidos en una lista
 	@Override
@@ -65,6 +46,52 @@ public class MovimientoDaoImplMy8Sb implements IntMovimientoDao {
 			}
 		}
 		return lista;
+	}
+
+	//Con este metodo creamos un movimiento de Extraccion
+	@Override
+	public int movimientoExtraccion(Cuenta cuenta, double cantidad) {
+		// TODO Auto-generated method stub
+		//Creamos un nuevo movimiento
+		Movimiento movimiento=new Movimiento();
+		movimiento.setCuenta(cuenta);
+		movimiento.setFecha(new Date());
+		movimiento.setOperacion("Extracción");
+		movimiento.setCantidad(cantidad);
+		
+		//Añadimos el movimiento a la lista de movimientos
+		int filas=0;
+		try {
+			mRepo.save(movimiento);
+			filas=1;
+		}catch (Exception e) {
+			e.printStackTrace();
+			
+		}
+		return filas;
+	}
+
+	//Con este metodo creamos un movimiento de ingreso
+	@Override
+	public int movimientoIngreso(Cuenta cuenta, double cantidad) {
+		// TODO Auto-generated method stub
+		//Creamos un nuevo movimiento
+				Movimiento movimiento=new Movimiento();
+				movimiento.setCuenta(cuenta);
+				movimiento.setFecha(new Date());
+				movimiento.setOperacion("Ingreso");
+				movimiento.setCantidad(cantidad);
+				
+				//Añadimos el movimiento a la lista de movimientos
+				int filas=0;
+				try {
+					mRepo.save(movimiento);
+					filas=1;
+				}catch (Exception e) {
+					e.printStackTrace();
+					
+				}
+				return filas;
 	}
 
 	
