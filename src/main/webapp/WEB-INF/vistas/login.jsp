@@ -10,14 +10,15 @@
 <meta charset="ISO-8859-1">
 <title>LOGIN</title>
 </head>
-<body style="margin:200px 600px 100px 600px">
+<body style="margin:200px 200px 100px 200px">
 	<div class="container3 border border-5  bg-success p-2 text-white bg-opacity-25  ">
 	<p>${fallo}</p>
 	<form action="/login" method="post" >
-  <div class="mb-4  d-flex justify-content-center">
-    <label for="idCuenta" class="form-label fw-bold  "> <i class="bi bi-bank"> ID CUENTA BANCARIA</i>  </label>
-    <input type="number" name="idCuenta" class="form-control w-50 " id="idCuenta" required >
-    
+  <div class="mb-3  d-flex justify-content-center">
+    <label for="idCuenta" class="form-label fw-bold  "> <i class="bi bi-bank"> ID CUENTA BANCARIA </i>  </label>
+  </div>
+   <div class="mb-3  d-flex justify-content-center">
+    <input type="number" name="idCuenta" class="form-control w-50 " id="idCuenta" required >  
   </div>
  <div class="mb-3 d-flex justify-content-center ">
  <button type="submit" class="btn btn-success "><i class="bi bi-person "> Entrar</i></button>

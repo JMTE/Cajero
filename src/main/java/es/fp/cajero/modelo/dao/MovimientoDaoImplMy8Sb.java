@@ -27,15 +27,16 @@ public class MovimientoDaoImplMy8Sb implements IntMovimientoDao {
 	//metodo creado por Query en el Repository
 	@Override
 	public List<Movimiento> findMovimientosByIdCuenta(int idCuenta) {
-		// TODO Auto-generated method stub
+		
 		return mRepo.findMovimientosByIdCuenta(idCuenta);
-	}
 	
+	}
+
 	
 	//Con este metodo devolvemos los 10 ultimos movimientos de una cuenta introducidos en una lista
 	@Override
 	public List<Movimiento> find10UltimosMovimientosbyIdCuenta(int idCuenta) {
-		// TODO Auto-generated method stub
+		
 		List<Movimiento> lista=new ArrayList<Movimiento>();
 		int contador=0;
 		for (int i=mRepo.findMovimientosByIdCuenta(idCuenta).size()-1;i>=0;i--) {
@@ -51,7 +52,7 @@ public class MovimientoDaoImplMy8Sb implements IntMovimientoDao {
 	//Con este metodo creamos un movimiento de Extraccion
 	@Override
 	public int movimientoExtraccion(Cuenta cuenta, double cantidad) {
-		// TODO Auto-generated method stub
+		
 		//Creamos un nuevo movimiento
 		Movimiento movimiento=new Movimiento();
 		movimiento.setCuenta(cuenta);
@@ -74,8 +75,8 @@ public class MovimientoDaoImplMy8Sb implements IntMovimientoDao {
 	//Con este metodo creamos un movimiento de ingreso
 	@Override
 	public int movimientoIngreso(Cuenta cuenta, double cantidad) {
-		// TODO Auto-generated method stub
-		//Creamos un nuevo movimiento
+	
+		
 				Movimiento movimiento=new Movimiento();
 				movimiento.setCuenta(cuenta);
 				movimiento.setFecha(new Date());

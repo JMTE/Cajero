@@ -12,20 +12,24 @@ import es.fp.cajero.modelo.repository.IntCuentaRepo;
 
 /* @Service se encarga de gestionar las operaciones más importantes a nivel de la aplicación y aglutina llamadas a varios repositorios 
  * de forma simultánea. Su tarea fundamental es la de agregador.*/
+
 @Service
 public class CuentaDaoImplMy8Sb implements IntCuentaDao {
 
 	/*Lo que hace un autowired es buscar un objeto manejado (beans) que implementen determinada interfaz para hacer referencia a él.
-	 *  De esta manera no es neceario crear una instancia nueva del objeto cada vez que se necesite la funcionalidad de determinada clase */
+	   De esta manera no es neceario crear una instancia nueva del objeto cada vez que se necesite la funcionalidad de determinada clase */
+	
 	@Autowired
 	private IntCuentaRepo CRepo ;
 	
-	//Con este metodo listamos todas las cuentas utilizando el metodo findAll de JPA Repository
+	
+	
 	@Override
 	public List<Cuenta> findAll() {
-		// TODO Auto-generated method stub
+		
 		return CRepo.findAll();
 	}
+
 
 	//Con este metodo buscamos una cuenta segun su idCuenta y si no existe devolvemos un null.
 	@Override
